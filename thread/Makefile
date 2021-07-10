@@ -9,6 +9,11 @@ TESTS= traversepostdeadlock_test \
 	   traversePostDeadlock_fixcow_test \
 	   selfdeadlock_test \
 	   selfdeadlock_fix_test \
+	   inventoryrequest_test \
+	   inventoryrequest_test2 \
+	   inventoryrequest_test3 \
+	   inventoryrequest_fix_test \
+	   inventoryrequest_fix_test3 \
 
 UNAME_S := $(shell uname -s)
 
@@ -39,6 +44,16 @@ traversePostDeadlock_fixcow_test: test/TraversePostDeadlock_FixCOW.cc
 selfdeadlock_test: test/SelfDeadlock.cc 
 
 selfdeadlock_fix_test: test/SelfDeadlock_Fix.cc
+
+inventoryrequest_test: test/InventoryRequest.cc
+
+inventoryrequest_test2: test/InventoryRequest2.cc
+
+inventoryrequest_test3: test/InventoryRequest3.cc
+
+inventoryrequest_fix_test: test/InventoryRequest_Fix.cc
+
+inventoryrequest_fix_test3: test/InventoryRequest3_Fix.cc
 
 clean:
 	rm -rf $(TESTS) $(CLEAN_OTHER)

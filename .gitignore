@@ -7,6 +7,15 @@
 *.o
 *.obj
 
+# From vscode
+.vscode
+
+# From IDEA
+.idea
+
+# From cmake default
+build
+
 # Precompiled Headers
 *.gch
 *.pch
@@ -30,3 +39,4 @@
 *.exe
 *.out
 *.app
+*.dSYM

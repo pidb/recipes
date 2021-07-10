@@ -22,7 +22,6 @@ class Request {
     cout << "call print()" << endl;
   }
 
-
  private:
   mutex mutex_;
 };

@@ -5,13 +5,13 @@ Some code snippets for sharing
 
 ## recipes of thread
 
-- [deadlock for posting when traversing](thread/test/TraversePostDeadlock.cc)
-- [use delay post to fix deadlock for posting when traversing](thread/test/TraversePostDeadlock_FixDelay.cc)
-- [use simple of COW (copy on write) to fix deadlock for posting when traversing](thread/test/TraversePostDeadlock_FixCOW.cc)
-- [deadlock: self call](thread/test/SelfDeadlock.cc)
-- [fix deadlock: splitting a locked call into two parts](thread/test/SelfDeadlock_Fix.cc)
-- [InventoryRequest: deadlock when hold each other's locks and wait](thread/test/InventoryRequest.cc)
-- [InventoryRequest: fix deadlock with separate locked and unlocked calls to aviod holding each other's locks](thread/test/InventoryRequest_Fix.cc)
-- [InventoryRequest: different call times to avoid deadlock](thread/test/InventoryRequest2.cc)
-- [InventoryRequest: deadlock and race condition when destructor](thread/test/InventoryRequest3.cc)
-- [InventoryRequest: fix deadlock and race condition when destructor use weak_ptr](thread/test/InventoryRequest3_Fix.cc)
+- [TraversePostDeadlock: 展示了某个线程 `push_back` 而另一线程 `traverse` 死锁的情况](thread/test/TraversePostDeadlock.cc)
+- [TraversePostDeadlock: 一种延迟修改的思路避免某个线程 `push_back` 而另一线程 `traverse` 造成迭代器失效的情况](thread/test/TraversePostDeadlock_FixDelay.cc)
+- [TraversePostDeadlock: 使用 `shared_ptr` 的机制来完成简单的写时复制以避免多线程迭代器失效的情况](thread/test/TraversePostDeadlock_FixCOW.cc)
+- [SelfDeadlock: 展示了同一对象自己的多个有锁函数多次调用死锁的情况](thread/test/SelfDeadlock.cc)
+- [SelfDeadlock: 分离有锁和无锁调用避免产生不可重入锁多次调用的情况](thread/test/SelfDeadlock_Fix.cc)
+- [InventoryRequest: 展示了互相持有对方锁并等待造成的死锁情况](thread/test/InventoryRequest.cc)
+- [InventoryRequest: 分离有锁和无锁调用避免调用产生互相持有对方锁并等待造成的死锁情况](thread/test/InventoryRequest_Fix.cc)
+- [InventoryRequest: 展示了即使互相持有对方锁但时间不同也可以避免死锁](thread/test/InventoryRequest2.cc)
+- [InventoryRequest: 展示了对象正在析构而另一个函数正在调用它的成员](thread/test/InventoryRequest3.cc)
+- [InventoryRequest: 使用 `weak_ptr` 弱指针修复对象在析构函数时另一线程调用了这个对象的问题](thread/test/InventoryRequest3_Fix.cc)

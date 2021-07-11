@@ -14,6 +14,8 @@ TESTS= traversepostdeadlock_test \
 	   inventoryrequest_test3 \
 	   inventoryrequest_fix_test \
 	   inventoryrequest_fix_test3 \
+	   simpleblockingqueue_test \
+	   countdownlatch_test \
 
 UNAME_S := $(shell uname -s)
 
@@ -54,6 +56,10 @@ inventoryrequest_test3: test/InventoryRequest3.cc
 inventoryrequest_fix_test: test/InventoryRequest_Fix.cc
 
 inventoryrequest_fix_test3: test/InventoryRequest3_Fix.cc
+
+simpleblockingqueue_test: test/SimpleBlockingQueue.cc
+
+countdownlatch_test: test/CountDownLatch.cc
 
 clean:
 	rm -rf $(TESTS) $(CLEAN_OTHER)

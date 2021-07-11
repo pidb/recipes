@@ -12,6 +12,7 @@
 
 # From IDEA
 .idea
+cmake-build-debug
 
 # From cmake default
 build

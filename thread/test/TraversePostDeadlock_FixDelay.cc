@@ -52,7 +52,7 @@ void post(Foo f) {
   if (!g_foos_.unique()) {
     std::cout << "call post() to delay post" << std::endl;
 
-    g_delay_operate_list_.push_back([f]() {
+    g_delay_operate_list_.emplace_back([f]() {
       lock_guard<mutex> lock_(g_mutex_);
       g_foos_->push_back(f);
     });

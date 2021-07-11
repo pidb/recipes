@@ -15,3 +15,4 @@ Some code snippets for sharing
 - [InventoryRequest: 展示了即使互相持有对方锁但时间不同也可以避免死锁](thread/test/InventoryRequest2.cc)
 - [InventoryRequest: 展示了对象正在析构而另一个函数正在调用它的成员](thread/test/InventoryRequest3.cc)
 - [InventoryRequest: 使用 `weak_ptr` 弱指针修复对象在析构函数时另一线程调用了这个对象的问题](thread/test/InventoryRequest3_Fix.cc)
+- [SimpleBlockingQueue: 使用 `condition_variable` `mutex` 实现的一个简单的阻塞队列](thread/test/SimpleBlockingQueue.cc)

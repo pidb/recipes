@@ -7,5 +7,5 @@ foreach( appfile ${APP_SOURCES} )
     message("${app} ${appfile}")
     add_executable( ${app} ${appfile} )
     # Make sure YourLib is linked to each app
-    target_link_libraries( ${app} csapp )
+    # target_link_libraries( ${app} youlib )
 endforeach( appfile ${APP_SOURCES} )

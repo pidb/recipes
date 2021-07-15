@@ -5,6 +5,8 @@
 #include <mutex>
 #include <thread>
 #include <vector>
+#include <functional>
+#include <cassert>
 
 using std::lock_guard;
 using std::mutex;

@@ -16,11 +16,12 @@ TESTS= traversepostdeadlock_test \
 	   inventoryrequest_fix_test3 \
 	   simpleblockingqueue_test \
 	   countdownlatch_test \
+	   banktransfer_test \
 
 UNAME_S := $(shell uname -s)
 
 ifeq ($(UNAME_S), Linux)
-	CXXFLAGS += -D Linux -lpthread -march=native -rdynamic
+	CXXFLAGS += -D Linux -pthread -march=native -rdynamic
 endif
 
 ifeq ($(UNAME_S), Darwin)
@@ -60,6 +61,8 @@ inventoryrequest_fix_test3: test/InventoryRequest3_Fix.cc
 simpleblockingqueue_test: test/SimpleBlockingQueue.cc
 
 countdownlatch_test: test/CountDownLatch.cc
+
+banktransfer_test: test/BankTransfer.cc
 
 clean:
 	rm -rf $(TESTS) $(CLEAN_OTHER)

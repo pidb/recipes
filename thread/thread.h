@@ -4,6 +4,8 @@
 #include <unistd.h>
 
 #include <cassert>
+#include <cerrno>
+#include <cstdio>
 #include <functional>
 #include <iostream>
 #include <memory>
@@ -22,17 +24,28 @@ typedef function<void()> thread_fn;
 
 class thread {
  public:
-  explicit thread(thread_fn fn, string name = string())
+  explicit thread(thread_fn fn, string name)
       : fn_(fn), name_(name), threadId_(0), tidPtr_(new pid_t(0)) {}
+
+  explicit thread(thread_fn fn, string name, shared_ptr<void*>& returnValuePtr)
+      : fn_(fn),
+        name_(name),
+        threadId_(0),
+        tidPtr_(new pid_t(0)),
+        wkReturnValuePtr_(returnValuePtr) {}
   void start();
   void join();
   pid_t get_tid();
   string get_name();
 
  private:
+  void handle_error(error_t en, string msg);
+
   thread_fn fn_;
   string name_;
   shared_ptr<pid_t> tidPtr_;
+  weak_ptr<void*> wkReturnValuePtr_;
+  ;
   pthread_t threadId_;
   bool started_;
   bool joined_;

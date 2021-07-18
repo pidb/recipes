@@ -25,14 +25,10 @@ typedef function<void()> thread_fn;
 class thread {
  public:
   explicit thread(thread_fn fn, string name)
-      : fn_(fn), name_(name), threadId_(0), tidPtr_(new pid_t(0)) {}
+      : fn_(fn), name_(name), tidPtr_(new pid_t(0)), threadId_(0) {}
 
-  explicit thread(thread_fn fn, string name, shared_ptr<void*>& returnValuePtr)
-      : fn_(fn),
-        name_(name),
-        threadId_(0),
-        tidPtr_(new pid_t(0)),
-        wkReturnValuePtr_(returnValuePtr) {}
+  ~thread();
+
   void start();
   void join();
   pid_t get_tid();
@@ -44,12 +40,9 @@ class thread {
   thread_fn fn_;
   string name_;
   shared_ptr<pid_t> tidPtr_;
-  weak_ptr<void*> wkReturnValuePtr_;
-  ;
   pthread_t threadId_;
   bool started_;
   bool joined_;
-  ;
 };
 
 class thread_proxy {

@@ -1,5 +1,7 @@
 #include "./thread.h"
 
+#include <pthread.h>
+
 namespace recipes {
 __thread const char* threadCachedName_ = "unknow";
 __thread pid_t threadCachedTid_;
@@ -33,6 +35,15 @@ void* startThread(void* data) {
   return nullptr;
 }
 
+thread::~thread() {
+  if (!joined_ && started_) {
+    int err = pthread_detach(threadId_);
+    if (err != 0) {
+      handle_error(err, "pthread_detach");
+    }
+  }
+}
+
 void thread::start() {
   assert(!started_ && !joined_);
   started_ = true;
@@ -51,13 +62,7 @@ void thread::join() {
   assert(started_ && !joined_);
   // TODO recevie return value from pthread.
   joined_ = true;
-  int err = -1;
-  auto observeReturnValue = wkReturnValuePtr_.lock();
-  if (observeReturnValue) {
-    err = pthread_join(threadId_, &(*observeReturnValue));
-  } else {
-    err = pthread_join(threadId_, nullptr);
-  }
+  int err = pthread_join(threadId_, NULL);
   if (err != 0) {
     joined_ = false;
     handle_error(err, "pthread_join");

@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 
+#include "mutext.h"
 #include "thread.h"
 
 void threadWithOutput(int i) {

@@ -17,4 +17,4 @@ Some code snippets for sharing
 - [InventoryRequest: 使用 `weak_ptr` 弱指针修复对象在析构函数时另一线程调用了这个对象的问题](thread/test/InventoryRequest3_Fix.cc)
 - [SimpleBlockingQueue: 使用 `condition_variable` `mutex` 实现的一个简单的阻塞队列](thread/test/SimpleBlockingQueue.cc)
 - [CountDownLatch: 使用 `condition_variable` `mutex` 实现的一个线程倒计时, 类似 Golang 的 `sync.WaitGroup`](thread/test/CountDownLatch.cc)
-- [BackTransfer: 一个使用 `unique_lock` 的银行转账示例]
+- [BankTransfer: 一个使用 `unique_lock` 的银行转账示例](thread/text/BankTransfer.cc)

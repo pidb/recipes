@@ -1,5 +1,5 @@
 COMPILER=g++
-CXXFLAGS=-g -Wall -std=c++17
+CXXFLAGS=-g -Wall
 CXXFLAGS+=-O2
 CLEAN_OTHER=
 
@@ -32,6 +32,10 @@ endif
 
 
 all: $(TESTS)
+
+libaray:
+	g++ -std=c++11 -c -pthread thread.h mutext.h thread.cc
+	ar rvs thread.a thread.o
 
 $(TESTS): $(HEADERS)
 

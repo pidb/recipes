@@ -6,7 +6,10 @@
 #include "mutext.h"
 #include "thread.h"
 
+recipes::MutexLock g_mutex_;
+
 void threadWithOutput(int i) {
+  recipes::MutexGuard lock_(g_mutex_);
   std::cout << "id=" << recipes::this_thread::get_id()
             << ", name=" << recipes::this_thread::get_name() << " output=" << i
             << std::endl;
@@ -15,6 +18,11 @@ void threadWithOutput(int i) {
 int main() {
   recipes::thread* t1 = new recipes::thread(
       [] {
+        recipes::MutexGuard lock_(g_mutex_);
+
+        std::cout << "is the lock owner: " << g_mutex_.is_owner_thread()
+                  << std::endl;
+
         std::cout << "id=" << recipes::this_thread::get_id()
                   << ", name=" << recipes::this_thread::get_name() << std::endl;
       },

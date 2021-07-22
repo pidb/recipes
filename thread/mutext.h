@@ -1,11 +1,11 @@
 
-#ifndef RECIPES_THREAD
-#define RECIPES_THREAD
+#ifndef RECIPES_MUTEX_H
+#define RECIPES_MUTEX_H
 #include <pthread.h>
 
 #include <cstdlib>
 
-#include "./thread.h"
+#include "thread.h"
 
 namespace recipes {
 
@@ -31,7 +31,12 @@ class MutexLock final : nocopyable {
     owner_ = this_thread::get_id();
   }
 
-  void unlock() { pthread_mutex_unlock(&mutex_variable_); }
+  void unlock() {
+    assert(owner_ == this_thread::get_id());
+    pthread_mutex_unlock(&mutex_variable_);
+  }
+
+  bool is_owner_thread() { return owner_ == this_thread::get_id(); }
 
   pthread_mutex_t* operator&() { return &mutex_variable_; }
 
@@ -52,4 +57,4 @@ class MutexGuard {
 
 };  // namespace recipes
 
-#endif /* RECIPES_THREAD */
+#endif /* RECIPES_MUTEX_H */

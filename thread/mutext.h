@@ -5,18 +5,12 @@
 
 #include <cstdlib>
 
+#include "base.h"
 #include "thread.h"
 
 namespace recipes {
 
-class nocopyable {
- public:
-  nocopyable() = default;
-  nocopyable(nocopyable& other) = delete;
-  nocopyable& operator=(nocopyable& other) = delete;
-};
-
-class MutexLock final : nocopyable {
+class MutexLock final : base::nocopyable {
  public:
   MutexLock() : owner_(0) {
     if (pthread_mutex_init(&mutex_variable_, nullptr) != 0) {
@@ -45,7 +39,7 @@ class MutexLock final : nocopyable {
   pid_t owner_;
 };
 
-class MutexGuard {
+class MutexGuard : base::nocopyable {
  public:
   explicit MutexGuard(MutexLock& mutex) : mutex_(mutex) { mutex_.lock(); }
 

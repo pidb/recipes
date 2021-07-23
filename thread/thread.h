@@ -11,6 +11,7 @@
 #include <memory>
 #include <string>
 
+#include "base.h"
 #include "pthread.h"
 
 using std::function;
@@ -22,7 +23,7 @@ namespace recipes {
 
 typedef function<void()> thread_fn;
 
-class thread {
+class thread : base::nocopyable {
  public:
   explicit thread(thread_fn fn, string name)
       : fn_(fn), name_(name), tidPtr_(new pid_t(0)), threadId_(0) {}

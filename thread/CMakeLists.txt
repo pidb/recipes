@@ -1,22 +1,53 @@
 enable_testing()
 
-add_library(thread STATIC thread.h  thread.cc mutext.h)
+set (RECIPES_SRCS 
+  thread.h  
+  mutext.h 
+  condition.h 
+  blockqueue.h 
+  CountDownLatch.h
+  thread.cc 
+)
 
-add_subdirectory(test)
+add_library(recipes_base ${RECIPES_SRCS})
 
-add_executable(test ThreadTest.cc)
+target_link_libraries(recipes_base pthread)
 
-target_link_libraries(test thread)
+
+# add_library(recipesthread STATIC 
+
+  
+#    )
+
+add_executable(
+  blockqueue_test
+  blockqueue_test.cc
+)
+
+target_link_libraries(
+  blockqueue_test
+  gtest
+  gtest_main
+  recipes_base
+)
 
 
 add_executable(
-  hello_test
-  hello_test.cc
-)
-target_link_libraries(
-  hello_test
-  gtest_main
+  countdownlatch_test
+  countdownlatch_test.cc
 )
 
-include(GoogleTest)
-gtest_discover_tests(hello_test)
+target_link_libraries(
+  countdownlatch_test
+  gtest
+  gtest_main
+  recipes_base
+)
+
+
+add_test(CountDownLatchTest countdownlatch_test)
+
+add_subdirectory(test)
+
+# add_executable(test ThreadTest.cc)
+

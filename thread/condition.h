@@ -13,7 +13,10 @@ class ConditionVariable : base::nocopyable {
   explicit ConditionVariable(MutexLock& mutexLock) : mutex_(mutexLock) {
     pthread_cond_init(&cond_, nullptr);
   }
-  ~ConditionVariable() { pthread_cond_destroy(&cond_); }
+  ~ConditionVariable() {
+    std::cout << "~ConditionVariable" << std::endl;
+    pthread_cond_destroy(&cond_);
+  }
   void wait() { pthread_cond_wait(&cond_, &mutex_); }
   bool waitForSeconds(time_t waitSeconds) {
     // TODO may be validator waitSeconds.

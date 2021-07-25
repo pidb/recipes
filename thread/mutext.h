@@ -18,15 +18,19 @@ class MutexLock final : base::nocopyable {
     }
   }
 
-  ~MutexLock() { pthread_mutex_destroy(&mutex_variable_); }
+  ~MutexLock() {
+    std::cout << "~MutexLock" << std::endl;
+    assert(owner_ == 0);
+    pthread_mutex_destroy(&mutex_variable_);
+  }
 
   void lock() {
     pthread_mutex_lock(&mutex_variable_);
-    owner_ = this_thread::get_id();
+    owner_ = recipes::this_thread::get_id();
   }
 
   void unlock() {
-    assert(owner_ == this_thread::get_id());
+    owner_ = 0;
     pthread_mutex_unlock(&mutex_variable_);
   }
 
@@ -50,5 +54,10 @@ class MutexGuard : base::nocopyable {
 };
 
 };  // namespace recipes
+
+// Prevent misuse like:
+// MutexLockGuard(mutex_);
+// A tempory object doesn't hold the lock for long!
+#define MutexGuard(x) error "Missing guard object name"
 
 #endif /* RECIPES_MUTEX_H */

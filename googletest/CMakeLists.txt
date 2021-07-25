@@ -6,9 +6,7 @@ add_executable(
 )
 target_link_libraries(
   basic
+  gtest
   gtest_main
+  pthread
 )
-
-include(GoogleTest)
-
-gtest_discover_tests(basic)

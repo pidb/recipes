@@ -2,6 +2,7 @@
 #define RECIPES_BLOCK_QUEUE_H
 
 #include <deque>
+#include <algorithm>
 
 #include "base.h"
 #include "condition.h"
@@ -37,6 +38,11 @@ class BlockQueue : base::nocopyable {
     T e = q_.front();
     q_.pop_front();
     return e;
+  }
+
+  bool contains(T e) { 
+     MutexGuard lock_(mutex_);
+     return q_.cend() != std::find(q_.cbegin(), q_.cend(), e);
   }
 
  private:

@@ -16,3 +16,5 @@ set (CMAKE_CXX_STANDARD 11)
 add_subdirectory(thread)
 
 add_subdirectory(googletest)
+
+add_subdirectory(net)

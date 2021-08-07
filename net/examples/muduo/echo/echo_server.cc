@@ -36,6 +36,5 @@ void EchoServer::OnConnection(const TcpConnectionPtr& conn) {
 void EchoServer::OnMessage(const TcpConnectionPtr& conn, Buffer* buf,
                            Timestamp ts) {
   std::string msg = buf->retrieveAllAsString();
-  std::cout << msg;
   conn->send(msg.c_str(), msg.size());
 }

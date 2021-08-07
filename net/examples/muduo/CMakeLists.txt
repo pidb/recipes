@@ -58,3 +58,18 @@ target_link_libraries(muduo_net muduo_base)
 # compiler examples
 add_executable(echo echo/main.cc echo/echo_server.cc)
 target_link_libraries(echo muduo_net)
+
+add_executable(discard discard/main.cc discard/discard_server.cc)
+target_link_libraries(discard muduo_net)
+
+add_executable(daytime daytime/main.cc daytime/daytime_server.cc)
+target_link_libraries(daytime muduo_net)
+
+add_executable(chargen chargen/main.cc chargen/chargen_server.cc)
+target_link_libraries(chargen muduo_net)
+
+add_executable(filetransfer_v1 filetransfer/v1/main.cc filetransfer/v1/server.cc)
+target_link_libraries(filetransfer_v1 muduo_net)
+
+add_executable(filetransfer_v2 filetransfer/v2/main.cc filetransfer/v2/server.cc)
+target_link_libraries(filetransfer_v2 muduo_net)

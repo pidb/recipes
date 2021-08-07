@@ -1,3 +1,6 @@
+#include <memory>
+#include <string>
+
 #include "muduo/base/Timestamp.h";
 #include "muduo/net/Buffer.h"
 #include "muduo/net/TcpConnection.h"
@@ -11,7 +14,15 @@ using muduo::net::TcpConnectionPtr;
 using muduo::net::TcpServer;
 class EchoServer {
  public:
+  typedef std::function<void(std::shared_ptr<std::string> msgPtr)>
+      EchoCapabilitiy;
+
   EchoServer(EventLoop* loop, const InetAddress& listenAddr);
+
+  EchoServer(EventLoop* loop, const InetAddress& listenAddr,
+             std::initializer_list<const EchoCapabilitiy&> capabilities);
+
+  ~EchoServer() { delete server_; }
 
   void Start();
 

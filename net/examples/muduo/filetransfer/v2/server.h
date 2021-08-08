@@ -10,16 +10,14 @@ using muduo::net::InetAddress;
 using muduo::net::TcpConnectionPtr;
 using muduo::net::TcpServer;
 
-const size_t kBufSize = 64 * 1024;
 
 class FileTransferServer {
  public:
   FileTransferServer(EventLoop* loop, const InetAddress& listenAddr);
 
+  void onConnection(const TcpConnectionPtr& conn);
   void onMessage(const TcpConnectionPtr& ptr, Buffer* buf, Timestamp ts);
-
   void onWriteComplete(const TcpConnectionPtr& conn);
-
   void start() { server_->start(); }
 
  private:

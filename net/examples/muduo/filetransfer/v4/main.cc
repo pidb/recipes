@@ -1,3 +1,5 @@
+#include <cstdio>
+
 #include "muduo/net/EventLoop.h"
 #include "server.h"
 
@@ -10,6 +12,7 @@ int main(int argc, const char* argv[]) {
   EventLoop loop;
   InetAddress listenAddr(2016);
   FileTransferServer server(&loop, listenAddr, argv[1]);
+  server.initFile();
   server.start();
   loop.loop();
 }

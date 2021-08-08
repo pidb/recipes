@@ -1,6 +1,10 @@
 #include "server.h"
 
-#include <cstdio>
+#include <fcntl.h>
+#include <unistd.h>
+
+#include <cassert>
+#include <cerrno>
 #include <functional>
 
 #include "muduo/base/CurrentThread.h"
@@ -10,7 +14,7 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-const int kBufSize = 1 * 1024;
+const int kBufSize = 10 * 1024;
 
 FileTransferServer::FileTransferServer(EventLoop* loop,
                                        const InetAddress& listenAddr,
@@ -24,38 +28,43 @@ FileTransferServer::FileTransferServer(EventLoop* loop,
       std::bind(&FileTransferServer::onWriteComplete, this, _1));
 }
 
-FileTransferServer::~FileTransferServer() { delete server_; }
+FileTransferServer::~FileTransferServer() {
+  delete server_;
+  ::close(fd_);
+}
+
+// 二段式构造, 防止构造函数异常
+void FileTransferServer::initFile() {
+  fd_ = ::open(filename_.c_str(), O_RDONLY);
+  if (fd_ == -1) {
+    perror("open");
+    abort();
+  }
+}
+
+void FileTransferServer::start() { server_->start(); }
 
 void FileTransferServer::onConnection(const TcpConnectionPtr& conn) {
   if (conn->connected()) {
-    FILE* fp = ::fopen(filename_.c_str(), "r");
-    if (!fp) {
-      conn->shutdown();
-      LOG_INFO << "no such file";
-      return;
-    }
-
-    FilePtr filePtr(fp, [](FILE* fp) { ::fclose(fp); });
-
-    conn->setContext(filePtr);
     char content[kBufSize];
     size_t nread;
-    if ((nread = ::fread(content, 1, sizeof content, filePtr.get())) > 0) {
+    if ((nread = ::pread(fd_, content, sizeof content, 0)) > 0) {
+      conn->setContext(nread);
       conn->send(content, nread);
     }
-  } else {
-    // 当TcpConnection 析构时, fp 会被close
   }
 }
 
 void FileTransferServer::onWriteComplete(const TcpConnectionPtr& conn) {
-  FilePtr fp = boost::any_cast<FilePtr>(conn->getContext());
+  size_t offset = boost::any_cast<size_t>(conn->getContext());
   char buf[kBufSize];
   size_t nread;
-  if ((nread = ::fread(buf, 1, sizeof buf, fp.get())) > 0) {
-    muduo::CurrentThread::sleepUsec(1000 * 100);
+  if ((nread = ::pread(fd_, buf, sizeof buf, offset)) > 0) {
+    // muduo::CurrentThread::sleepUsec(1000 * 1000);
     conn->send(buf, nread);
+    conn->setContext(offset + nread);
   } else {
-    // 当TcpConnction 析构时, fp会被 close
+    conn->setContext(0);
+    LOG_INFO << "transfer done.";
   }
 }

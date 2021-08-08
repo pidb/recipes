@@ -73,3 +73,9 @@ target_link_libraries(filetransfer_v1 muduo_net)
 
 add_executable(filetransfer_v2 filetransfer/v2/main.cc filetransfer/v2/server.cc)
 target_link_libraries(filetransfer_v2 muduo_net)
+
+add_executable(filetransfer_v3 filetransfer/v3/main.cc filetransfer/v3/server.cc)
+target_link_libraries(filetransfer_v3 muduo_net)
+
+add_executable(filetransfer_v4 filetransfer/v4/main.cc filetransfer/v4/server.cc)
+target_link_libraries(filetransfer_v4 muduo_net)
